@@ -23,7 +23,7 @@ import {
   PersistenceManager // Add PersistenceManager import
 } from 'hytopia';
 
-import rawWorldMap from './assets/maps/terrain.json';
+import rawWorldMap from './assets/maps/terrain.json' assert { type: 'json' };
 
 /**
  * Feather item that gives players a double jump ability
