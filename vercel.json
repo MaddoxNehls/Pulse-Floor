@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm install && npm rebuild",
+  "buildCommand": "npm install",
   "builds": [
     {
       "src": "index.ts",
@@ -8,10 +8,9 @@
       "config": {
         "includeFiles": [
           "assets/**", 
-          "audio/**",
-          "models/**"
+          "audio/**"
         ],
-        "nodeVersion": "20.x"
+        "nodeVersion": "18.x"
       }
     }
   ],
@@ -20,8 +19,5 @@
       "src": "/(.*)",
       "dest": "index.ts"
     }
-  ],
-  "env": {
-    "NODE_OPTIONS": "--experimental-modules --experimental-json-modules --no-warnings"
-  }
+  ]
 } 
