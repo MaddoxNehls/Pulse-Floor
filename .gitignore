@@ -38,3 +38,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Development/Testing Data
 dev/persistence/
+
+# SDK Documentation (Local Copy)
+hytopiagg sdk main docs/
