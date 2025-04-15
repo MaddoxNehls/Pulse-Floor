@@ -7,9 +7,9 @@
  * Based on design in Idea.md
  */
 
+// Standard imports - keep these as ESM imports
 import {
   startServer,
-  Audio,
   PlayerEntity,
   PlayerEvent,
   World,
@@ -23,7 +23,16 @@ import {
   PersistenceManager // Add PersistenceManager import
 } from 'hytopia';
 
-import rawWorldMap from './assets/maps/terrain.json' assert { type: 'json' };
+// Import the Audio type for TypeScript type checking
+import type { Audio } from './audio-types.js';
+
+// CommonJS imports to avoid ESM issues on Vercel
+const { loadJson } = require('./json-loader');
+// We need to use require() for Audio to work around Vercel issues
+const HytopiaAudio = require('hytopia').Audio;
+
+// Load the JSON file using our helper
+const rawWorldMap = loadJson('assets/maps/terrain.json');
 
 /**
  * Feather item that gives players a double jump ability
@@ -120,7 +129,7 @@ class FeatherItem {
           this.createDoubleJumpEffect();
           
           // Play a sound effect for the double jump
-          const doubleJumpSound = new Audio({
+          const doubleJumpSound = new HytopiaAudio({
             uri: 'audio/sfx/custom/feather-jump.mp3', // Updated path
             volume: 0.1, // Reduced volume
           });
@@ -137,7 +146,7 @@ class FeatherItem {
           // Notify player
         } else {
           // Play error sound when out of jumps
-          const errorSound = new Audio({
+          const errorSound = new HytopiaAudio({
             uri: 'audio/sfx/custom/error.mp3',
             volume: 0.15,
           });
@@ -315,7 +324,7 @@ class PlayerStepAudio {
     
     // Create the audio object, explicitly attach it to the player,
     // and set very short distances for volume falloff.
-    const stepSound = new Audio({
+    const stepSound = new HytopiaAudio({
       uri: stepSoundUri,
       attachedToEntity: this.playerEntity, // Attach to player
       referenceDistance: 0.1, // Very small distance for max volume
@@ -332,7 +341,7 @@ class PlayerStepAudio {
   
   private playJumpSound() {
     // Play the jump sound effect
-    const jumpSound = new Audio({
+    const jumpSound = new HytopiaAudio({
       uri: 'audio/sfx/custom/jump.mp3',
       volume: 0.9, // Adjust volume as needed
       attachedToEntity: this.playerEntity, // Attach to player for positional sound
@@ -779,7 +788,7 @@ export class PulseSystem {
     this.lastPulseStartCheck = currentTime;
     
     // Play a sound effect for the pulse start
-    new Audio({
+    new HytopiaAudio({
       uri: 'audio/sfx/custom/pulse.mp3',
       loop: false,
       volume: 0.4, // Reduced volume
@@ -1241,7 +1250,7 @@ export class PulseSystem {
 
       // Play the break sound ONCE after processing all removals for this frame
       try {
-         new Audio({
+         new HytopiaAudio({
            uri: 'audio/sfx/custom/stone-break.mp3',
            loop: false,
            volume: 0.1, // Consistent volume
@@ -1264,7 +1273,7 @@ export class PulseSystem {
       this.world.chunkLattice.setBlock(position, 41); // Red texture
       
       // Play a short warning sound
-      new Audio({
+      new HytopiaAudio({
         uri: 'audio/effects/break.mp3',
         loop: false,
         volume: 0.2,
@@ -1295,7 +1304,7 @@ export class PulseSystem {
 
     // SOUND PLAYBACK MOVED TO processBlockRemovals
     // // Just play a sound effect for the destruction - no visual effects
-    // new Audio({
+    // new HytopiaAudio({
     //   uri: 'audio/sfx/custom/stone-break.mp3', // Use the correct custom sound
     //   loop: false,
     //   volume: 0.15, // Reduced volume consistent with other uses
@@ -1606,7 +1615,7 @@ export class PulseSystem {
     setTimeout(() => {
       if (this.isBlockCracked(position) && !this.isBlockRemoved(position)) {
         // Play a sound effect to highlight the danger
-        new Audio({
+        new HytopiaAudio({
           uri: 'audio/effects/break.mp3',
           loop: false,
           volume: 0.2,
@@ -1683,7 +1692,7 @@ export class PulseSystem {
             
             // --- Play Stone Break Sound ---
             try {
-              new Audio({ uri: 'audio/sfx/custom/stone-break.mp3', volume: 0.1 }).play(this.world); // Reduced volume
+              new HytopiaAudio({ uri: 'audio/sfx/custom/stone-break.mp3', volume: 0.1 }).play(this.world); // Reduced volume
             } catch (e) {
               console.error("Error playing stone break sound:", e);
             }
@@ -1774,7 +1783,7 @@ export class PulseSystem {
     }
     
     // Optional: Play a subtle sound when created?
-    // new Audio({ ... }).play(this.world);
+    // new HytopiaAudio({ ... }).play(this.world);
   }
   
   /**
@@ -1902,7 +1911,7 @@ export class PulseSystem {
     
     // --- Play Sticky Sound --- 
     try {
-      new Audio({
+      new HytopiaAudio({
         uri: 'audio/sfx/custom/sticky.mp3',
         loop: false,
         volume: 0.1, // Reduced volume
@@ -1941,7 +1950,7 @@ export class PulseSystem {
 
     // SOUND MOVED - Only plays when effect expires now
     // // Play effect sound
-    // new Audio({
+    // new HytopiaAudio({
     //   uri: \'audio/sfx/custom/sticky-freedom.mp3\',
     //   loop: false,
     //   volume: 0.1, // Reduced volume
@@ -1982,7 +1991,7 @@ export class PulseSystem {
         // Notify player the effect has worn off
         
         // Play a "freedom" sound
-        new Audio({
+        new HytopiaAudio({
           uri: 'audio/sfx/custom/sticky-freedom.mp3',
           loop: false,
           volume: 0.4, // Reduced volume
@@ -2372,7 +2381,7 @@ export class PulseSystem {
             console.log(`Fake tile vanished at (${posToRemove.x}, ${posToRemove.y}, ${posToRemove.z})`);
             
             // Sound removed - No sound needed when fake tile vanishes this way
-            /* new Audio({
+            /* new HytopiaAudio({
               uri: 'audio/sfx/custom/stone-break.mp3',
               loop: false,
               volume: 0.4,
@@ -2623,7 +2632,7 @@ export class PulseSystem {
     this.activeReversePulses.push({ radius: this.reversePulseStartRadius });
 
     // Play a distinct sound effect for the reverse pulse
-    new Audio({
+    new HytopiaAudio({
       uri: 'audio/sfx/custom/pulse-reverse.mp3',
       loop: false,
       volume: 0.4, // Reduced volume
@@ -2663,7 +2672,7 @@ export class PulseSystem {
     });
     
     // Play cross pulse sound effect
-    new Audio({
+    new HytopiaAudio({
       uri: 'audio/sfx/custom/cross-pulse.mp3',
       loop: false,
       volume: 0.1, // Adjust as needed
@@ -2747,7 +2756,7 @@ export class PulseSystem {
     this.activePulses.push({ radius: 0 });
     
     // Play a distinctive sound
-    new Audio({
+    new HytopiaAudio({
       uri: 'audio/sfx/custom/pulse.mp3', // Use the same sound but with higher pitch
       loop: false,
       volume: 0.3, // Reduced volume
@@ -2781,7 +2790,7 @@ export class PulseSystem {
     this.activePulses.push({ radius: 0 });
     
     // Play a distinctive sound
-    new Audio({
+    new HytopiaAudio({
       uri: 'audio/sfx/custom/pulse.mp3', // Use the same sound but would be better with higher pitch
       loop: false,
       volume: 0.35, // Reduced volume
@@ -3286,22 +3295,22 @@ class GameManager {
     this.pulseSystem = new PulseSystem(world);
     
     // Initialize Music Objects Here
-    this.snowThemeMusic = new Audio({
+    this.snowThemeMusic = new HytopiaAudio({
       uri: 'audio/music/snow-theme.mp3',
       volume: 0.15,
       loop: true
     });
-    this.phase2Music = new Audio({
+    this.phase2Music = new HytopiaAudio({
       uri: 'audio/music/phase-2.mp3',
       volume: 0.15,
       loop: true
     });
-    this.midGameMusic = new Audio({
+    this.midGameMusic = new HytopiaAudio({
       uri: 'audio/music/mid-game.mp3',
       volume: 0.11,
       loop: false // Only play once
     });
-    this.lateGameMusic = new Audio({
+    this.lateGameMusic = new HytopiaAudio({
       uri: 'audio/music/late-game.mp3',
       volume: 0.1,
       loop: true 
@@ -3311,8 +3320,8 @@ class GameManager {
     // Preload music tracks by playing and pausing immediately
     try {
       console.log("Preloading music tracks...");
-      this.snowThemeMusic?.play(this.world); this.snowThemeMusic?.pause();
-      this.phase2Music?.play(this.world); this.phase2Music?.pause();
+      this.snowThemeMusic?.play(this.world, true); this.snowThemeMusic?.pause();
+      this.phase2Music?.play(this.world, true); this.phase2Music?.pause();
       this.midGameMusic?.play(this.world); this.midGameMusic?.pause();
       this.lateGameMusic?.play(this.world); this.lateGameMusic?.pause();
       console.log("Music tracks preloaded.");
@@ -3438,7 +3447,7 @@ class GameManager {
     
     // Play the start button sound
     try {
-      new Audio({
+      new HytopiaAudio({
         uri: 'audio/sfx/custom/start.mp3', // New custom sound path
         loop: false,
         volume: 0.2 // Reduced volume
@@ -3497,7 +3506,7 @@ class GameManager {
     
     // --- Play Countdown Sound ---
     try {
-      new Audio({ uri: 'audio/sfx/custom/countdown.mp3', volume: 0.1 }).play(this.world); // Reduced volume
+      new HytopiaAudio({ uri: 'audio/sfx/custom/countdown.mp3', volume: 0.1 }).play(this.world); // Reduced volume
     } catch (e) {
       console.error("Error playing countdown sound:", e);
     }
@@ -3627,7 +3636,7 @@ class GameManager {
         if (isBelowThreshold && !isDead && !isPlayingLavaSound) {
           // Start playing lava sound
           try {
-            const lavaSound = new Audio({ 
+            const lavaSound = new HytopiaAudio({ 
               uri: 'audio/sfx/custom/lava.mp3', 
               volume: 0.15, 
               loop: true // Loop the sound
@@ -3716,7 +3725,7 @@ class GameManager {
       if (this.pulseSystem.checkPlayerFall(playerEntity)) {
         // --- Play Death Sound IMMEDIATELY when fall is detected ---
         try {
-          new Audio({ uri: 'audio/sfx/custom/death.mp3', volume: 0.3 }).play(this.world);
+          new HytopiaAudio({ uri: 'audio/sfx/custom/death.mp3', volume: 0.3 }).play(this.world);
         } catch (e) {
           console.error("Error playing death sound:", e);
         }
@@ -4109,9 +4118,9 @@ class GameManager {
       if (!this.hasPlayedPhaseSound) {
         try {
           // Rumble
-          new Audio({ uri: 'audio/sfx/custom/rumble.mp3', volume: 0.2 }).play(this.world); // Reduced volume
+          new HytopiaAudio({ uri: 'audio/sfx/custom/rumble.mp3', volume: 0.2 }).play(this.world); // Reduced volume
           // Phase Change
-          new Audio({
+          new HytopiaAudio({
             uri: 'audio/sfx/custom/next-phase.mp3',
             loop: false,
             volume: 0.35, // Reduced volume
@@ -4392,7 +4401,7 @@ class GameManager {
       // Check if we've reached the end of the animation
       if (currentY <= groundLevel) { // Stop when we reach the ground level
         // REMOVE/COMMENT OUT the sound effect for impact
-        // new Audio({
+        // new HytopiaAudio({
         //   uri: \'audio/sfx/custom/stone-break.mp3\', // Ensure this sound exists
         //   loop: false,
         //   volume: 0.15, // Reduced volume
@@ -5503,7 +5512,7 @@ class GameManager {
     // Play spawn sound immediately
     // Use custom bonus spawn sound
     try {
-      new Audio({ uri: 'audio/sfx/custom/bonus-spawn.mp3', volume: 0.15 }).play(this.world); // Reduced volume
+      new HytopiaAudio({ uri: 'audio/sfx/custom/bonus-spawn.mp3', volume: 0.15 }).play(this.world); // Reduced volume
     } catch (e) {
       console.error("Error playing bonus spawn sound:", e);
     }
@@ -5522,7 +5531,7 @@ class GameManager {
   private createBonusTileCollectEffect(position: { x: number, y: number, z: number }): void {
     // Play collection sound
     // Use custom bonus collected sound
-    new Audio({ uri: 'audio/sfx/custom/bonus-collected.mp3', volume: 0.07 }).play(this.world); // Reduced volume
+    new HytopiaAudio({ uri: 'audio/sfx/custom/bonus-collected.mp3', volume: 0.07 }).play(this.world); // Reduced volume
     
     // Send event to UI to potentially clear notification
     this.broadcastToPlayers({ type: 'bonusTileCollected' });
@@ -5700,7 +5709,7 @@ class GameManager {
      // --- Play Death Sound FIRST ---
      try {
        // Ensure sound plays immediately upon triggering death
-       new Audio({ uri: 'audio/sfx/custom/death.mp3', volume: 0.3 }).play(this.world);
+       new HytopiaAudio({ uri: 'audio/sfx/custom/death.mp3', volume: 0.3 }).play(this.world);
      } catch (e) {
        console.error("Error playing death sound:", e);
      }
@@ -5726,7 +5735,7 @@ class GameManager {
 
      // --- OLD Death Sound Location (REMOVED) ---
      // try {
-     //   new Audio({ uri: \'audio/sfx/custom/death.mp3\', volume: 0.3 }).play(this.world); // Reduced volume
+     //   new HytopiaAudio({ uri: \'audio/sfx/custom/death.mp3\', volume: 0.3 }).play(this.world); // Reduced volume
      // } catch (e) {
      //   console.error(\"Error playing death sound:\", e);
      // }
@@ -5916,7 +5925,7 @@ class WorldManager {
           
           // --- Play Button Click Sound ---
           try {
-            new Audio({ uri: 'audio/sfx/custom/play-again-button-click.mp3', volume: 0.2 }).play(playerWorld); // Reduced volume
+            new HytopiaAudio({ uri: 'audio/sfx/custom/play-again-button-click.mp3', volume: 0.2 }).play(playerWorld); // Reduced volume
           } catch (e) {
             console.error("Error playing play again button sound:", e);
           }
@@ -5961,17 +5970,17 @@ class WorldManager {
             // Play different sounds based on the soundType
             if (data.soundType === 'click') {
               // Use switch-flip for general clicks
-              new Audio({ uri: 'audio/sfx/ui/switch-flip.mp3', volume: 0.15 }).play(playerWorld);
+              new HytopiaAudio({ uri: 'audio/sfx/ui/switch-flip.mp3', volume: 0.15 }).play(playerWorld);
             } else if (data.soundType === 'hover') {
               // Play hover sound
-              new Audio({ uri: 'audio/sfx/ui/button-hover.mp3', volume: 0.1 }).play(playerWorld); // Assuming a hover sound exists
+              new HytopiaAudio({ uri: 'audio/sfx/ui/button-hover.mp3', volume: 0.1 }).play(playerWorld); // Assuming a hover sound exists
             } else if (data.soundType === 'notification') {
               // Play notification sound
-              new Audio({ uri: 'audio/sfx/ui/notification-1.mp3', volume: 0.2 }).play(playerWorld);
+              new HytopiaAudio({ uri: 'audio/sfx/ui/notification-1.mp3', volume: 0.2 }).play(playerWorld);
             } else {
               // Fallback to button click if type is unknown
               console.warn(`Unknown UI sound type: ${data.soundType}, using default click.`);
-              new Audio({ uri: 'audio/sfx/ui/switch-flip.mp3', volume: 0.15 }).play(playerWorld);
+              new HytopiaAudio({ uri: 'audio/sfx/ui/switch-flip.mp3', volume: 0.15 }).play(playerWorld);
             }
           } catch (e) {
             console.error(`Error playing UI sound (${data.soundType}):`, e);
@@ -5985,8 +5994,8 @@ class WorldManager {
       // Preload bonus tile sound effects
       try {
         console.log('Preloading bonus tile sounds...');
-        const spawnSound = new Audio({ uri: 'audio/sfx/custom/bonus-spawn.mp3', volume: 0 });
-        const collectSound = new Audio({ uri: 'audio/sfx/custom/bonus-collected.mp3', volume: 0 });
+        const spawnSound = new HytopiaAudio({ uri: 'audio/sfx/custom/bonus-spawn.mp3', volume: 0 });
+        const collectSound = new HytopiaAudio({ uri: 'audio/sfx/custom/bonus-collected.mp3', volume: 0 });
         // Play and immediately stop/despawn to force loading
         spawnSound.play(playerWorld);
         spawnSound.pause(); // Or despawn if pause isn't sufficient
