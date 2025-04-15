@@ -23,7 +23,12 @@ import {
   PersistenceManager // Add PersistenceManager import
 } from 'hytopia';
 
-import rawWorldMap from './assets/maps/terrain.json' assert { type: 'json' };
+// Replace static import with variable declaration
+let rawWorldMap: any = null;
+// Declare worldMap at global scope but initialize inside startServer
+let worldMap: any = null;
+
+// We'll load the JSON dynamically in startServer
 
 /**
  * Feather item that gives players a double jump ability
@@ -472,9 +477,6 @@ function fixMapTextures(mapData: any): any {
   console.log("Map texture fixing complete");
   return map;
 }
-
-// Fix map textures before loading
-const worldMap = fixMapTextures(rawWorldMap);
 
 /**
  * Represents the pulse system that removes blocks based on an expanding wave
@@ -6130,7 +6132,22 @@ class WorldManager {
 /**
  * startServer is the entry point for our game.
  */
-startServer(world => {
+startServer(async (world) => {
+  // Dynamically import the terrain.json file
+  try {
+    console.log("Loading terrain map file...");
+    // Use standard dynamic import without assertions
+    const terrainModule = await import('./assets/maps/terrain.json');
+    rawWorldMap = terrainModule.default;
+    console.log("Terrain map loaded successfully");
+  } catch (error) {
+    console.error("Error loading terrain map:", error);
+    return; // Exit early if we can't load the map
+  }
+
+  // Fix map textures before loading
+  const worldMap = fixMapTextures(rawWorldMap);
+
   // Enable physics debug rendering if needed
   // world.simulation.enableDebugRendering(true);
 
