@@ -1,23 +1,20 @@
 {
   "version": 2,
-  "buildCommand": "npm install",
   "builds": [
     {
-      "src": "index.ts",
+      "src": "PulseFloor/index.ts", // Path from repo root to your main server file
       "use": "@vercel/node",
       "config": {
-        "includeFiles": [
-          "assets/**", 
-          "audio/**"
-        ],
-        "nodeVersion": "18.x"
+        // Make sure your UI assets and other necessary files are included
+        "includeFiles": ["PulseFloor/assets/**", "PulseFloor/audio/**"] 
       }
     }
   ],
   "routes": [
+    // Route all incoming requests to be handled by your index.ts server
     {
       "src": "/(.*)",
-      "dest": "index.ts"
+      "dest": "PulseFloor/index.ts"
     }
   ]
 } 

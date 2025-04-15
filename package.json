@@ -2,23 +2,15 @@
   "name": "pulsefloor",
   "module": "index.ts",
   "type": "module",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "private": true,
-  "scripts": {
-    "dev": "bun run index.ts",
-    "start": "node index.ts"
-  },
   "devDependencies": {
-    "@types/bun": "latest",
-    "@types/node": "^20.11.5"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
     "@hytopia.com/assets": "^0.2.8",
-    "hytopia": "^0.3.30"
+    "hytopia": "^0.3.28"
   }
 }
