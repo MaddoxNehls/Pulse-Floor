@@ -7,6 +7,10 @@
  * Based on design in Idea.md
  */
 
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
 import {
   startServer,
   Audio,
@@ -23,7 +27,13 @@ import {
   PersistenceManager // Add PersistenceManager import
 } from 'hytopia';
 
-import rawWorldMap from './assets/maps/terrain.json' assert { type: 'json' };
+// Determine the directory of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load JSON using fs
+const mapPath = join(__dirname, 'assets', 'maps', 'terrain.json');
+const rawWorldMap = JSON.parse(readFileSync(mapPath, 'utf-8'));
 
 /**
  * Feather item that gives players a double jump ability
