@@ -7,6 +7,9 @@
  * Based on design in Idea.md
  */
 
+import * as fs from 'fs/promises';
+import * as path from 'path';
+
 import {
   startServer,
   Audio,
@@ -23,12 +26,9 @@ import {
   PersistenceManager // Add PersistenceManager import
 } from 'hytopia';
 
-// Replace static import with variable declaration
+// Replace dynamic import logic
 let rawWorldMap: any = null;
-// Declare worldMap at global scope but initialize inside startServer
 let worldMap: any = null;
-
-// We'll load the JSON dynamically in startServer
 
 /**
  * Feather item that gives players a double jump ability
@@ -6133,20 +6133,23 @@ class WorldManager {
  * startServer is the entry point for our game.
  */
 startServer(async (world) => {
-  // Dynamically import the terrain.json file
+  // Load terrain.json using fs
   try {
-    console.log("Loading terrain map file...");
-    // Use standard dynamic import without assertions
-    const terrainModule = await import('./assets/maps/terrain.json');
-    rawWorldMap = terrainModule.default;
-    console.log("Terrain map loaded successfully");
-  } catch (error) {
-    console.error("Error loading terrain map:", error);
-    return; // Exit early if we can't load the map
-  }
+    console.log("Loading terrain map file using fs...");
+    const filePath = path.join(__dirname, 'assets', 'maps', 'terrain.json');
+    const fileContent = await fs.readFile(filePath, 'utf-8');
+    rawWorldMap = JSON.parse(fileContent);
+    console.log("Terrain map loaded successfully via fs");
+    
+    // Fix map textures immediately after loading
+    console.log("Fixing map textures...");
+    worldMap = fixMapTextures(rawWorldMap);
+    console.log("Map textures fixed.");
 
-  // Fix map textures before loading
-  const worldMap = fixMapTextures(rawWorldMap);
+  } catch (error) {
+    console.error("Error loading or parsing terrain map:", error);
+    return; // Exit early if we can't load/parse the map
+  }
 
   // Enable physics debug rendering if needed
   // world.simulation.enableDebugRendering(true);
@@ -6154,9 +6157,10 @@ startServer(async (world) => {
   // Set up ambient lighting for the world
   setupAmbientLighting(world);
 
-  // Load the default map for now
-  // We'll create a custom arena later
+  // Load the fixed map
+  console.log("Loading fixed map into world...");
   world.loadMap(worldMap);
+  console.log("Map loaded into world.");
   
   // Create our world manager to handle player-specific worlds
   const worldManager = new WorldManager(world, worldMap);
