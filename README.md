@@ -22,27 +22,26 @@ Pulse Floor is an interactive rhythm game where players navigate a dynamic dance
 1. Clone the repository:
 ```bash
 git clone https://github.com/MaddoxNehls/Pulse-Floor.git
-cd Pulse-Floor/PulseFloor
 ```
 
-2. Install dependencies:
+2. Navigate to the project directory:
+```bash
+cd Pulse-Floor
+```
+
+3. Install dependencies:
 ```bash
 bun install
 ```
 
-### Running Locally
+### Running the Game
 
-To run the game locally:
+To start the game server:
 ```bash
 bun run index.ts
 ```
 
-## Playing on Hytopia
-
-You can play Pulse Floor directly on the Hytopia platform:
-
-1. Visit [hytopia.com/play](https://hytopia.com/play)
-2. Search for "Pulse Floor" or use the direct link (when available)
+After starting the server, open your web browser and go to `http://localhost:3000` (the exact port may be displayed in your terminal after running the command).
 
 ## Development
 
@@ -58,4 +57,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Acknowledgments
 
 - Built with [Hytopia](https://hytopia.com) - A platform for creating and sharing web-based games
-- Created using `bun init` in bun v1.2.8
+- Created using Bun v1.2.8
