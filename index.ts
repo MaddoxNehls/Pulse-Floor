@@ -26,6 +26,10 @@ import {
   PersistenceManager // Add PersistenceManager import
 } from 'hytopia';
 
+// Temporarily log all exports from hytopia
+import * as HytopiaAll from 'hytopia';
+console.log("All Hytopia Exports:", Object.keys(HytopiaAll));
+
 // Replace dynamic import logic
 let rawWorldMap: any = null;
 let worldMap: any = null;
