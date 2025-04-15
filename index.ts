@@ -31,7 +31,7 @@ const { loadJson } = require('./json-loader');
 // We need to use require() for Audio to work around Vercel issues
 const HytopiaAudio = require('hytopia').Audio;
 
-// Load the JSON file using our helper
+// Load the JSON file using our helper (this avoids import assertions)
 const rawWorldMap = loadJson('assets/maps/terrain.json');
 
 /**

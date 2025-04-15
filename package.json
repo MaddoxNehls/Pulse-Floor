@@ -1,14 +1,14 @@
 {
   "name": "pulsefloor",
   "module": "index.ts",
-  "type": "module",
+  "type": "commonjs",
   "engines": {
     "node": ">=18.0.0"
   },
   "private": true,
   "scripts": {
     "dev": "bun run index.ts",
-    "start": "node --experimental-json-modules index.ts"
+    "start": "node --experimental-modules --experimental-json-modules --no-warnings index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",

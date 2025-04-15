@@ -8,7 +8,8 @@
       "config": {
         "includeFiles": [
           "assets/**", 
-          "audio/**"
+          "audio/**",
+          "models/**"
         ],
         "nodeVersion": "20.x"
       }
@@ -21,6 +22,6 @@
     }
   ],
   "env": {
-    "NODE_OPTIONS": "--experimental-json-modules"
+    "NODE_OPTIONS": "--experimental-modules --experimental-json-modules --no-warnings"
   }
 } 
