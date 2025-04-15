@@ -1,0 +1,24 @@
+[33mcommit 6bb761aedaa36d286b63c7fbe9a1e72b511e9594[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Maddox Nehls <nehlsm@oregonstate.edu>
+Date:   Tue Apr 15 11:23:23 2025 -0700
+
+    Update README with detailed gameplay instructions and requirements
+
+M	README.md
+
+[33mcommit 837456335f5f8198dda1829e89fad37ac2f0276e[m
+Author: Maddox Nehls <nehlsm@oregonstate.edu>
+Date:   Tue Apr 15 11:15:22 2025 -0700
+
+    Update README to clarify local game server instructions
+
+M	README.md
+
+[33mcommit 1179ecb3955deaefe25863ff6c0d2ff50d172608[m
+Author: Maddox Nehls <nehlsm@oregonstate.edu>
+Date:   Tue Apr 15 11:10:55 2025 -0700
+
+    Update README with detailed game information and improve .gitignore
+
+M	.gitignore
+M	README.md

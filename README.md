@@ -44,7 +44,7 @@ To start the game server:
 bun run index.ts
 ```
 
-After starting the server, open your web browser and go to `http://localhost:3000` (the exact port may be displayed in your terminal after running the command).
+After starting the server, open your web browser and go to `http://localhost:8080` (the exact port may be displayed in your terminal after running the command).
 
 ## How to Play
 
