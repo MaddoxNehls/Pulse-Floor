@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "npm install",
   "builds": [
     {
       "src": "index.ts",
@@ -8,7 +9,8 @@
         "includeFiles": [
           "assets/**", 
           "audio/**"
-        ]
+        ],
+        "nodeVersion": "18.x"
       }
     }
   ],
