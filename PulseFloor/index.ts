@@ -1,0 +1,1 @@
+import rawWorldMap from './assets/maps/terrain.json' assert { type: 'json' }; 
