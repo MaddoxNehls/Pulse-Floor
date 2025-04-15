@@ -1,0 +1,65 @@
+{
+  "leaderboard": [
+    {
+      "name": "Void Nomad",
+      "score": 9305,
+      "survivalTime": 135.968,
+      "date": 1744706676784
+    },
+    {
+      "name": "Nova Technomancer",
+      "score": 9095,
+      "survivalTime": 123.299,
+      "date": 1744695250600
+    },
+    {
+      "name": "Midnight Ninja",
+      "score": 8720,
+      "survivalTime": 120.578,
+      "date": 1744698408345
+    },
+    {
+      "name": "Omega Hunter",
+      "score": 8620,
+      "survivalTime": 118.629,
+      "date": 1744697501239
+    },
+    {
+      "name": "Cosmic Technomancer",
+      "score": 7320,
+      "survivalTime": 111.055,
+      "date": 1744697030750
+    },
+    {
+      "name": "Nova Technomancer",
+      "score": 6830,
+      "survivalTime": 103.701,
+      "date": 1744695522028
+    },
+    {
+      "name": "Maddox",
+      "score": 6825,
+      "survivalTime": 104.085,
+      "date": 1744706860634
+    },
+    {
+      "name": "Glitch Ghost",
+      "score": 6415,
+      "survivalTime": 107.066,
+      "date": 1744674837449
+    },
+    {
+      "name": "Void Drifter",
+      "score": 5490,
+      "survivalTime": 92.326,
+      "date": 1744670530790
+    },
+    {
+      "name": "Astro Wizard",
+      "score": 5310,
+      "survivalTime": 96.897,
+      "date": 1744724758396
+    }
+  ],
+  "lastUpdated": 1744724758396
+}
