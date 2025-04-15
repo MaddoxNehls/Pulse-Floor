@@ -7,9 +7,6 @@
  * Based on design in Idea.md
  */
 
-import * as fs from 'fs/promises';
-import * as path from 'path';
-
 import {
   startServer,
   Audio,
@@ -26,13 +23,7 @@ import {
   PersistenceManager // Add PersistenceManager import
 } from 'hytopia';
 
-// Temporarily log all exports from hytopia
-import * as HytopiaAll from 'hytopia';
-console.log("All Hytopia Exports:", Object.keys(HytopiaAll));
-
-// Replace dynamic import logic
-let rawWorldMap: any = null;
-let worldMap: any = null;
+import rawWorldMap from './assets/maps/terrain.json';
 
 /**
  * Feather item that gives players a double jump ability
@@ -481,6 +472,9 @@ function fixMapTextures(mapData: any): any {
   console.log("Map texture fixing complete");
   return map;
 }
+
+// Fix map textures before loading
+const worldMap = fixMapTextures(rawWorldMap);
 
 /**
  * Represents the pulse system that removes blocks based on an expanding wave
@@ -6136,35 +6130,16 @@ class WorldManager {
 /**
  * startServer is the entry point for our game.
  */
-startServer(async (world) => {
-  // Load terrain.json using fs
-  try {
-    console.log("Loading terrain map file using fs...");
-    const filePath = path.join(__dirname, 'assets', 'maps', 'terrain.json');
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    rawWorldMap = JSON.parse(fileContent);
-    console.log("Terrain map loaded successfully via fs");
-    
-    // Fix map textures immediately after loading
-    console.log("Fixing map textures...");
-    worldMap = fixMapTextures(rawWorldMap);
-    console.log("Map textures fixed.");
-
-  } catch (error) {
-    console.error("Error loading or parsing terrain map:", error);
-    return; // Exit early if we can't load/parse the map
-  }
-
+startServer(world => {
   // Enable physics debug rendering if needed
   // world.simulation.enableDebugRendering(true);
 
   // Set up ambient lighting for the world
   setupAmbientLighting(world);
 
-  // Load the fixed map
-  console.log("Loading fixed map into world...");
+  // Load the default map for now
+  // We'll create a custom arena later
   world.loadMap(worldMap);
-  console.log("Map loaded into world.");
   
   // Create our world manager to handle player-specific worlds
   const worldManager = new WorldManager(world, worldMap);
