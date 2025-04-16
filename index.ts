@@ -3871,10 +3871,10 @@ class GameManager {
     //  this.triggerFallingBlocks();
     // }
     
-    // Re-enable falling blocks check
-    if (this.currentPhase >= 2) {
-      this.triggerFallingBlocks();
-    }
+    // Re-enable falling blocks check - NOW COMMENTING OUT FOR PERFORMANCE
+    // if (this.currentPhase >= 2) {
+    //   this.triggerFallingBlocks();
+    // }
   }
   
   /**
