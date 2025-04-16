@@ -1,6 +1,12 @@
 {
   "leaderboard": [
     {
+      "name": "Maddox",
+      "score": 10330,
+      "survivalTime": 136.165,
+      "date": 1744753207359
+    },
+    {
       "name": "Void Nomad",
       "score": 9305,
       "survivalTime": 135.968,
@@ -53,13 +59,7 @@
       "score": 6415,
       "survivalTime": 107.066,
       "date": 1744674837449
-    },
-    {
-      "name": "Void Drifter",
-      "score": 5490,
-      "survivalTime": 92.326,
-      "date": 1744670530790
     }
   ],
-  "lastUpdated": 1744740549984
+  "lastUpdated": 1744753207359
 }
