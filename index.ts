@@ -6051,36 +6051,36 @@ class WorldManager {
    */
   private setupWorldLights(world: World) {
     // Replicate all the lights from the default world
-    createGlowingLight(world, 31, 26, -16, { r: 255, g: 210, b: 80 }, 75);
-    createGlowingLight(world, 31, 26, -2, { r: 255, g: 210, b: 80 }, 75);
-    createGlowingLight(world, 31, 26, 12, { r: 255, g: 210, b: 80 }, 75);
-    createGlowingLight(world, -31, 26, 13, { r: 255, g: 210, b: 80 }, 75);
-    createGlowingLight(world, -31, 26, -1, { r: 255, g: 210, b: 80 }, 75);
-    createGlowingLight(world, -31, 26, -15, { r: 255, g: 210, b: 80 }, 75);
+    createGlowingLight(world, 31, 26, -16, { r: 255, g: 210, b: 80 }, 55);
+    createGlowingLight(world, 31, 26, -2, { r: 255, g: 210, b: 80 }, 55);
+    createGlowingLight(world, 31, 26, 12, { r: 255, g: 210, b: 80 }, 55);
+    createGlowingLight(world, -31, 26, 13, { r: 255, g: 210, b: 80 }, 55);
+    createGlowingLight(world, -31, 26, -1, { r: 255, g: 210, b: 80 }, 55);
+    createGlowingLight(world, -31, 26, -15, { r: 255, g: 210, b: 80 }, 55);
     
-    createGlowingLight(world, -12, 8, 12, { r: 189, g: 60, b: 9 }, 5000);
-    createGlowingLight(world, -12, 8, -10, { r: 189, g: 60, b: 9 }, 5000);
-    createGlowingLight(world, 8, 8, 12, { r: 189, g: 60, b: 9 }, 5000);
-    createGlowingLight(world, 8, 8, -10, { r: 189, g: 60, b: 9 }, 5000);
-    createGlowingLight(world, 0, 8, 0, { r: 189, g: 60, b: 9 }, 5000);
+    createGlowingLight(world, -12, 8, 12, { r: 189, g: 60, b: 9 }, 1000);
+    createGlowingLight(world, -12, 8, -10, { r: 189, g: 60, b: 9 }, 1000);
+    createGlowingLight(world, 8, 8, 12, { r: 189, g: 60, b: 9 }, 1000);
+    createGlowingLight(world, 8, 8, -10, { r: 189, g: 60, b: 9 }, 1000);
+    createGlowingLight(world, 0, 8, 0, { r: 189, g: 60, b: 9 }, 1000);
 
-    createGlowingLight(world, -2, 29, -4, { r: 191, g: 47, b: 186 }, 700);
+    createGlowingLight(world, -2, 29, -4, { r: 191, g: 47, b: 186 }, 600);
 
-    createGlowingLight(world, 27, 35, -5, { r: 191, g: 47, b: 186 }, 100);
-    createGlowingLight(world, 27, 35, 0, { r: 191, g: 47, b: 186 }, 100);
-    createGlowingLight(world, -27, 35, 2, { r: 191, g: 47, b: 186 }, 100);
-    createGlowingLight(world, -27, 35, -3, { r: 191, g: 47, b: 186 }, 100);
-    createGlowingLight(world, -1, 35, -27, { r: 191, g: 47, b: 186 }, 100);
-    createGlowingLight(world, 3, 35, -27, { r: 191, g: 47, b: 186 }, 100);
-    createGlowingLight(world, 2, 35, 27, { r: 191, g: 47, b: 186 }, 100);
-    createGlowingLight(world, -3, 35, 27, { r: 191, g: 47, b: 186 }, 100);
+    createGlowingLight(world, 27, 35, -5, { r: 191, g: 47, b: 186 }, 70);
+    createGlowingLight(world, 27, 35, 0, { r: 191, g: 47, b: 186 }, 70);
+    createGlowingLight(world, -27, 35, 2, { r: 191, g: 47, b: 186 }, 70);
+    createGlowingLight(world, -27, 35, -3, { r: 191, g: 47, b: 186 }, 70);
+    createGlowingLight(world, -1, 35, -27, { r: 191, g: 47, b: 186 }, 70);
+    createGlowingLight(world, 3, 35, -27, { r: 191, g: 47, b: 186 }, 70);
+    createGlowingLight(world, 2, 35, 27, { r: 191, g: 47, b: 186 }, 70);
+    createGlowingLight(world, -3, 35, 27, { r: 191, g: 47, b: 186 }, 70);
 
-    createGlowingLight(world, -31, 42, 14, { r: 255, g: 136, b: 0 }, 400);
-    createGlowingLight(world, -31, 42, 0, { r: 255, g: 136, b: 0 }, 400);
-    createGlowingLight(world, -31, 42, -14, { r: 255, g: 136, b: 0 }, 400);
-    createGlowingLight(world, 30, 42, -17, { r: 255, g: 136, b: 0 }, 400);
-    createGlowingLight(world, 30, 42, -3, { r: 255, g: 136, b: 0 }, 400);
-    createGlowingLight(world, 30, 42, 11, { r: 255, g: 136, b: 0 }, 400);
+    createGlowingLight(world, -31, 42, 14, { r: 255, g: 136, b: 0 }, 300);
+    createGlowingLight(world, -31, 42, 0, { r: 255, g: 136, b: 0 }, 300);
+    createGlowingLight(world, -31, 42, -14, { r: 255, g: 136, b: 0 }, 300);
+    createGlowingLight(world, 30, 42, -17, { r: 255, g: 136, b: 0 }, 300);
+    createGlowingLight(world, 30, 42, -3, { r: 255, g: 136, b: 0 }, 300);
+    createGlowingLight(world, 30, 42, 11, { r: 255, g: 136, b: 0 }, 300);
   }
   
   /**
