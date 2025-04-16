@@ -21,6 +21,48 @@ and also configure additional buttons for mobile compatibility.
 -->
 
 <script>
+  // Trackpad sensitivity enhancement
+  (function() {
+    // Store original method reference
+    const originalProcessMouseMove = window.hytopia.processMouseMove;
+    
+    // Variables for device detection
+    let isTrackpad = false;
+    let lastWheelTime = 0;
+    let lastMoveTime = 0;
+    
+    // Trackpad sensitivity multiplier (increase this value to make trackpad more sensitive)
+    const TRACKPAD_SENSITIVITY = 2.5;
+    
+    // Listen for wheel events to detect trackpad
+    window.addEventListener('wheel', function(e) {
+      // Update last wheel event time
+      lastWheelTime = Date.now();
+      
+      // If wheel and mousemove events are close together, it's likely a trackpad
+      if (Date.now() - lastMoveTime < 50) {
+        isTrackpad = true;
+      }
+    }, { passive: true });
+    
+    // Override the mouse movement processing function
+    window.hytopia.processMouseMove = function(x, y) {
+      // For trackpads, apply the sensitivity multiplier
+      if (isTrackpad) {
+        x *= TRACKPAD_SENSITIVITY;
+        y *= TRACKPAD_SENSITIVITY;
+      }
+      
+      // Update last move time for trackpad detection
+      lastMoveTime = Date.now();
+      
+      // Use the original method with potentially modified values
+      return originalProcessMouseMove.call(this, x, y);
+    };
+    
+    console.log("Trackpad sensitivity enhancement initialized");
+  })();
+
   // Handle interact button touch / untouch
   const mobileInteractButton = document.getElementById('mobile-interact-button');
   if (mobileInteractButton) {
