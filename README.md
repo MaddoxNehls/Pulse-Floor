@@ -1,3 +1,5 @@
+# 04/16/2025 ⚠️ PERFORMANCE ISSUES AND TYPE ERRORS ON MAC HAVE BEEN FIXED. IF YOU CLONED THE REPOSITORY BEFORE THIS UPDATE, PLEASE RE-CLONE IT.
+
 # Pulse Floor
 
 A rhythm-based dance floor game built with the Hytopia SDK. Players navigate a dynamic temple floor while avoiding pulse waves that destroy tiles. Test your reflexes and timing as you jump over deadly waves and collect bonus tiles for extra points!
