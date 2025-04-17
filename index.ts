@@ -5552,20 +5552,69 @@ class GameManager {
       const playerId = playerEntity.player.id;
       const position = playerEntity.position;
       
-      // Determine if player is grounded (simple check: block directly below)
-      const blockBelowPos = { x: Math.floor(position.x), y: Math.floor(position.y - 1), z: Math.floor(position.z) };
-      const isGrounded = this.world.chunkLattice.hasBlock(blockBelowPos);
+      // Check multiple points under player's bounding box instead of just the center
+      // Player's bounding box is roughly 0.6x0.6 blocks, so we check 4 corner points
+      const cornerOffsets = [
+        {x: -0.3, z: -0.3}, // back left
+        {x: -0.3, z: 0.3},  // front left
+        {x: 0.3, z: -0.3},  // back right
+        {x: 0.3, z: 0.3}    // front right
+      ];
+      
+      // Determine if player is grounded by checking if any point has a block beneath
+      let isGrounded = false;
+      let isAllBlocksValid = true;
+      
+      // Check all corners
+      for (const offset of cornerOffsets) {
+        const cornerPosX = position.x + offset.x;
+        const cornerPosZ = position.z + offset.z;
+        const blockBelowCorner = { 
+          x: Math.floor(cornerPosX), 
+          y: Math.floor(position.y - 1), 
+          z: Math.floor(cornerPosZ) 
+        };
+        
+        // If any corner has a block beneath, player is grounded
+        const hasBlockBelow = this.world.chunkLattice.hasBlock(blockBelowCorner);
+        if (hasBlockBelow) {
+          isGrounded = true;
+          
+          // If any supporting block is not on the valid platform, player is partially out of bounds
+          const isValidBlock = this.pulseSystem.isBlockInPlatformPublic(blockBelowCorner);
+          if (!isValidBlock) {
+            isAllBlocksValid = false;
+          }
+        }
+      }
+      
+      // Also check center point as a fallback
+      const centerBlockBelow = { 
+        x: Math.floor(position.x), 
+        y: Math.floor(position.y - 1), 
+        z: Math.floor(position.z) 
+      };
+      
+      // If center has a block, player is definitely grounded
+      if (this.world.chunkLattice.hasBlock(centerBlockBelow)) {
+        isGrounded = true;
+        
+        // Check if center point is on valid platform
+        const isCenterValid = this.pulseSystem.isBlockInPlatformPublic(centerBlockBelow);
+        if (!isCenterValid) {
+          isAllBlocksValid = false;
+        }
+      }
+      
       const wasAirborne = this.playerAirborneState.get(playerId) ?? true; // Assume airborne if first time seeing player
       
       // Update airborne state for next tick
       this.playerAirborneState.set(playerId, !isGrounded);
 
       if (isGrounded) {
-        // Player is on the ground, check if it's a valid spot
-        const isValidPlatform = this.pulseSystem.isBlockInPlatformPublic(blockBelowPos);
-
-        if (!isValidPlatform) {
-          // Player landed or is standing out of bounds
+        // Player is on the ground, check if all supporting blocks are valid
+        if (!isAllBlocksValid) {
+          // Player landed or is standing partially out of bounds
           if (wasAirborne && !this.outOfBoundsTimers.has(playerId)) {
             // Player just landed out of bounds - start the countdown
             this.startOutOfBoundsCountdown(playerEntity.player);
@@ -5574,7 +5623,7 @@ class GameManager {
             this.startOutOfBoundsCountdown(playerEntity.player);
           }
         } else {
-          // Player is on a valid platform block
+          // Player is fully on valid platform blocks
           if (this.outOfBoundsTimers.has(playerId)) {
             // Player returned to safety - cancel the countdown
             this.cancelOutOfBoundsCountdown(playerId);
@@ -5637,9 +5686,65 @@ class GameManager {
       // Check if player still exists and is still out of bounds
       if (currentEntity && this.outOfBoundsTimers.has(playerId)) {
         const position = currentEntity.position;
-        const blockBelowPos = { x: Math.floor(position.x), y: Math.floor(position.y - 1), z: Math.floor(position.z) };
-        const isGrounded = this.world.chunkLattice.hasBlock(blockBelowPos);
-        const isValidPlatform = isGrounded && this.pulseSystem.isBlockInPlatformPublic(blockBelowPos);
+        
+        // Check multiple points under player's bounding box instead of just the center
+        // Player's bounding box is roughly 0.6x0.6 blocks, so we check 4 corner points
+        const cornerOffsets = [
+          {x: -0.3, z: -0.3}, // back left
+          {x: -0.3, z: 0.3},  // front left
+          {x: 0.3, z: -0.3},  // back right
+          {x: 0.3, z: 0.3}    // front right
+        ];
+        
+        // Determine if player is grounded by checking if any point has a block beneath
+        let isGrounded = false;
+        let isAllBlocksValid = true;
+        
+        // Check all corners
+        for (const offset of cornerOffsets) {
+          const cornerPosX = position.x + offset.x;
+          const cornerPosZ = position.z + offset.z;
+          const blockBelowCorner = { 
+            x: Math.floor(cornerPosX), 
+            y: Math.floor(position.y - 1), 
+            z: Math.floor(cornerPosZ) 
+          };
+          
+          // If any corner has a block beneath, player is grounded
+          const hasBlockBelow = this.world.chunkLattice.hasBlock(blockBelowCorner);
+          if (hasBlockBelow) {
+            isGrounded = true;
+            
+            // If any supporting block is not on the valid platform, player is partially out of bounds
+            const isValidBlock = this.pulseSystem.isBlockInPlatformPublic(blockBelowCorner);
+            if (!isValidBlock) {
+              isAllBlocksValid = false;
+            }
+          }
+        }
+        
+        // Also check center point as a fallback
+        const centerBlockBelow = { 
+          x: Math.floor(position.x), 
+          y: Math.floor(position.y - 1), 
+          z: Math.floor(position.z) 
+        };
+        
+        // If center has a block, player is definitely grounded
+        if (this.world.chunkLattice.hasBlock(centerBlockBelow)) {
+          isGrounded = true;
+          
+          // Check if center point is on valid platform
+          const isCenterValid = this.pulseSystem.isBlockInPlatformPublic(centerBlockBelow);
+          if (!isCenterValid) {
+            isAllBlocksValid = false;
+          }
+        }
+        
+        // Consider player to be on invalid platform if:
+        // 1. They are grounded AND
+        // 2. At least one of their support blocks is invalid
+        const isValidPlatform = !isGrounded || isAllBlocksValid;
 
         if (!isValidPlatform) {
           if (nextStage <= 0) {
